@@ -57,7 +57,7 @@ impl FromStr for Person {
         // 分割字符串, 转换为 Vec
         let tokens: Vec<&str> = s.split(",").collect();
         // 解构 tokens
-        let (name, age) = match tokens[..] {
+        match tokens[..] {
             // 匹配数组中只有两个元素的情况
             [name, age] => {
                 // 判断 name 是否为空
@@ -69,12 +69,14 @@ impl FromStr for Person {
                     .parse::<usize>()
                     .map_err(ParsePersonError::ParseInt)?;
                 // 返回元组
-                (name.to_string(), age)
+                Ok(Person {
+                    name: name.to_string(),
+                    age,
+                })
             }
             // 其他情况
-            _ => return Err(ParsePersonError::BadLen),
-        };
-        Ok(Person { name, age })
+            _ => Err(ParsePersonError::BadLen),
+        }
     }
 }
 

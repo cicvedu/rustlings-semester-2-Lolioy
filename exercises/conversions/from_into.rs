@@ -42,22 +42,30 @@ impl Default for Person {
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
-        if s.is_empty() {
-            return Default::default();
+        // 分割字符串, 转换为 Vec
+        let tokens: Vec<&str> = s.split(",").collect();
+        // 解构 tokens
+        match tokens[..] {
+            // 匹配数组中只有两个元素的情况
+            [name, age] => {
+                // 判断 name 是否为空
+                if name.is_empty() {
+                    return Default::default();
+                }
+                // 解析 age 字段
+                let age = match tokens[1].parse::<usize>() {
+                    Ok(age) => age,
+                    Err(_) => return Default::default(),
+                };
+                // 返回元组
+                Person {
+                    name: name.to_string(),
+                    age,
+                }
+            }
+            // 其他情况
+            _ => Default::default(),
         }
-        let tokens = match s.split(",").collect::<Vec<&str>>() {
-            x if x.len() == 2 => x,
-            _ => return Default::default(),
-        };
-        let name = match tokens[0].to_string() {
-            x if !x.is_empty() => x,
-            _ => return Default::default(),
-        };
-        let age = match tokens[1].parse::<usize>() {
-            Ok(age) => age,
-            Err(_) => return Default::default(),
-        };
-        Person { name, age }
     }
 }
 
