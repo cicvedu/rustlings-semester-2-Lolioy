@@ -27,7 +27,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
 // integers, an array of three integers, and a slice of integers.
@@ -40,22 +39,19 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
-        let r = tuple.0.try_into();
-        if r.is_err() {
-            return Err(IntoColorError::IntConversion);
-        }
-        let g = tuple.1.try_into();
-        if g.is_err() {
-            return Err(IntoColorError::IntConversion);
-        }
-        let b = tuple.2.try_into();
-        if b.is_err() {
-            return Err(IntoColorError::IntConversion);
-        }
         Ok(Self {
-            red: r.unwrap(),
-            green: g.unwrap(),
-            blue: b.unwrap(),
+            red: match tuple.0.try_into() {
+                Ok(r) => r,
+                Err(_) => return Err(IntoColorError::IntConversion),
+            },
+            green: match tuple.1.try_into() {
+                Ok(g) => g,
+                Err(_) => return Err(IntoColorError::IntConversion),
+            },
+            blue: match tuple.2.try_into() {
+                Ok(b) => b,
+                Err(_) => return Err(IntoColorError::IntConversion),
+            },
         })
     }
 }
@@ -64,22 +60,19 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
-        let r = arr[0].try_into();
-        if r.is_err() {
-            return Err(IntoColorError::IntConversion);
-        }
-        let g = arr[1].try_into();
-        if g.is_err() {
-            return Err(IntoColorError::IntConversion);
-        }
-        let b = arr[2].try_into();
-        if b.is_err() {
-            return Err(IntoColorError::IntConversion);
-        }
         Ok(Self {
-            red: r.unwrap(),
-            green: g.unwrap(),
-            blue: b.unwrap(),
+            red: match arr[0].try_into() {
+                Ok(r) => r,
+                Err(_) => return Err(IntoColorError::IntConversion),
+            },
+            green: match arr[1].try_into() {
+                Ok(g) => g,
+                Err(_) => return Err(IntoColorError::IntConversion),
+            },
+            blue: match arr[2].try_into() {
+                Ok(b) => b,
+                Err(_) => return Err(IntoColorError::IntConversion),
+            },
         })
     }
 }
@@ -91,22 +84,19 @@ impl TryFrom<&[i16]> for Color {
         if slice.len() != 3 {
             return Err(IntoColorError::BadLen);
         }
-        let r = slice[0].try_into();
-        if r.is_err() {
-            return Err(IntoColorError::IntConversion);
-        }
-        let g = slice[1].try_into();
-        if g.is_err() {
-            return Err(IntoColorError::IntConversion);
-        }
-        let b = slice[2].try_into();
-        if b.is_err() {
-            return Err(IntoColorError::IntConversion);
-        }
         Ok(Self {
-            red: r.unwrap(),
-            green: g.unwrap(),
-            blue: b.unwrap(),
+            red: match slice[0].try_into() {
+                Ok(r) => r,
+                Err(_) => return Err(IntoColorError::IntConversion),
+            },
+            green: match slice[1].try_into() {
+                Ok(g) => g,
+                Err(_) => return Err(IntoColorError::IntConversion),
+            },
+            blue: match slice[2].try_into() {
+                Ok(b) => b,
+                Err(_) => return Err(IntoColorError::IntConversion),
+            },
         })
     }
 }
