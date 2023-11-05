@@ -25,7 +25,9 @@ fn main() {
 
     let mut results: Vec<u128> = vec![];
     for handle in handles {
-        results.push(handle.join().unwrap());
+        if let Ok(value) = handle.join() {
+            results.push(value);
+        }
     }
 
     if results.len() != 10 {
